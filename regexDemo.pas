@@ -3,12 +3,16 @@ unit regexDemo;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.CheckLst,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.CheckLst,
+  System.Generics.Collections,
   System.RegularExpressions;
 
 type
-  TRegexDemoFlags = (rCaseInsensitve, rGlobal, rMultiline, rDotall, rExtended, rUngreedy);
+  TRegexDemoFlags = (rCaseInsensitve=0, rGlobal, rMultiline, rDotall, rExtended,
+    rUngreedy);
 
   TForm1 = class(TForm)
     Panel1: TPanel;
@@ -25,6 +29,7 @@ type
   private
     function Expression: string;
     function GetFlags: TRegExOptions;
+    procedure DisplayResults(AMatch: TMatch; AMatches: TMatchCollection);
     { Private declarations }
   public
     { Public declarations }
@@ -37,36 +42,67 @@ implementation
 
 {$R *.dfm}
 
-
-
-
 function TForm1.Expression: string;
 begin
-  result := string(memExpression.text).replace(#13#10,'');
+  result := string(memExpression.text).replace(#13#10, '');
 end;
 
 function TForm1.GetFlags: TRegExOptions;
+var
+  I :integer;
+  Flag: TRegexDemoFlags;
 begin
-  for var I := 0 to clbFlags.count-1 do
+  result := [];
+  for I := 0 to clbFlags.count - 1 do
   begin
-    if not clbFlags.Checked[i] then continue;
-    var Flag : TRegexDemoFlags := TRegexDemoFlags(i);
+    if not clbFlags.Checked[I] then
+      continue;
+    Flag := TRegexDemoFlags(I);
     case Flag of
-      rCaseInsensitve: result := result + [TRegexOption.roIgnoreCase];
-      rGlobal: ;
-      rMultiline: result := result + [TRegexOption.roMultiLine];
-      rDotall: result := result + [TRegexOption.roSingleLine];
-      rExtended: result := Result + [TRegexOption.roIgnorePatternSpace];
-      rUngreedy: result := result + [TRegExOption.roExplicitCapture];
+      rCaseInsensitve:
+        result := result + [TRegexOption.roIgnoreCase];
+      rGlobal:
+        ;
+      rMultiline:
+        result := result + [TRegexOption.roMultiLine];
+      rDotall:
+        result := result + [TRegexOption.roSingleLine];
+      rExtended:
+        result := result + [TRegexOption.roIgnorePatternSpace];
+      rUngreedy:
+        result := result + [TRegexOption.roExplicitCapture];
     end;
-
   end;
 end;
 
-procedure TForm1.SearchClick(Sender: TObject);
+procedure TForm1.DisplayResults(AMatch: TMatch;
+  AMatches: TMatchCollection);
+
+  procedure Display(ACurrentMatch: TMatch);
+  begin
+    if ACurrentMatch.Success then
+      memResults.lines.Add(format('%d - %s', [ACurrentMatch.Index , ACurrentMatch.Value]));
+  end;
+
 begin
-  var match := TRegex.match(memDocument.text, Expression, GetFlags);
-  memResults.text := match.value;
+  memResults.Clear;
+  Display(AMatch);
+  for var lMatch in AMatches do
+    display(lMatch);
+end;
+
+procedure TForm1.SearchClick(Sender: TObject);
+var
+  lMatches: TMatchCollection;
+  lMatch: TMatch;
+begin
+  if clbFlags.Checked[ord(rGlobal)] then
+    lMatches := TRegex.Matches(memDocument.text, Expression, GetFlags)
+  else
+    lMatch := TRegex.match(memDocument.text, Expression, GetFlags);
+
+  DisplayResults(lMatch, lMatches);
+
 end;
 
 end.
