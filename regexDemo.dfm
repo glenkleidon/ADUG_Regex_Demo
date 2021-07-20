@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = 'Form1'
   ClientHeight = 519
-  ClientWidth = 861
+  ClientWidth = 870
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,17 +16,18 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 169
-    Width = 861
+    Width = 870
     Height = 3
     Cursor = crVSplit
     Align = alTop
     ExplicitLeft = -17
     ExplicitTop = 110
+    ExplicitWidth = 861
   end
   object Splitter2: TSplitter
     Left = 0
     Top = 372
-    Width = 861
+    Width = 870
     Height = 3
     Cursor = crVSplit
     Align = alBottom
@@ -36,14 +37,13 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 172
-    Width = 861
+    Width = 870
     Height = 197
     Align = alTop
     TabOrder = 0
-    ExplicitLeft = 64
-    ExplicitTop = 169
+    ExplicitWidth = 861
     DesignSize = (
-      861
+      870
       197)
     object lblExpression: TLabel
       Left = 16
@@ -60,9 +60,9 @@ object Form1: TForm1
       Caption = 'Flags'
     end
     object clbFlags: TCheckListBox
-      Left = 428
+      Left = 421
       Top = 25
-      Width = 416
+      Width = 432
       Height = 152
       Anchors = [akTop, akRight, akBottom]
       Font.Charset = DEFAULT_CHARSET
@@ -76,16 +76,15 @@ object Form1: TForm1
         '(g) Global'
         '(m) Multiline use $ and ^ on each line'
         '(s) DotAll fullstop matches ANY char'
-        '(x) Literal space is ignored'
+        '(x) Extended Literal space ignored + Comments'
         '(u) Ungreedy')
       ParentFont = False
       TabOrder = 0
-      ExplicitLeft = 423
     end
     object memExpression: TMemo
       Left = 16
       Top = 25
-      Width = 401
+      Width = 399
       Height = 112
       Anchors = [akLeft, akTop, akRight, akBottom]
       Font.Charset = ANSI_CHARSET
@@ -99,7 +98,7 @@ object Form1: TForm1
       TabOrder = 1
     end
     object Search: TButton
-      Left = 325
+      Left = 318
       Top = 143
       Width = 97
       Height = 34
@@ -112,12 +111,12 @@ object Form1: TForm1
   object memDocument: TMemo
     Left = 0
     Top = 0
-    Width = 861
+    Width = 870
     Height = 169
     Align = alTop
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -16
+    Font.Height = -19
     Font.Name = 'Consolas'
     Font.Style = []
     Lines.Strings = (
@@ -126,21 +125,21 @@ object Form1: TForm1
       '')
     ParentFont = False
     TabOrder = 1
-    ExplicitTop = -3
-    ExplicitWidth = 794
+    ExplicitWidth = 861
   end
   object memResults: TMemo
     Left = 0
     Top = 375
-    Width = 861
+    Width = 870
     Height = 144
     Align = alBottom
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -16
+    Font.Height = -19
     Font.Name = 'Consolas'
     Font.Style = []
     ParentFont = False
     TabOrder = 2
+    ExplicitWidth = 861
   end
 end
