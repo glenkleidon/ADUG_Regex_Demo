@@ -79,15 +79,28 @@ begin
 end;
 
 procedure TForm1.Display(ACurrentMatch: TMatch);
+var
+  I: integer;
 begin
-  if not (ACurrentMatch.Success) then exit;
+  if not(ACurrentMatch.Success) then
+    exit;
+
   memResults.lines.Add(format('Match %d %d-%d "%s"',
-    [ FCounter,
-      ACurrentMatch.Index,
-      ACurrentMatch.Index + ACurrentMatch.Length,
-      ACurrentMatch.Value.Replace(#13#10, '^')
-    ]));
-  inc(FCounter);
+    [fCounter,
+     ACurrentMatch.Index,
+     ACurrentMatch.Index + ACurrentMatch.Length,
+     ACurrentMatch.Value.replace(#13#10, '^')]));
+
+  for I := 1 to ACurrentMatch.Groups.Count-1 do
+  begin
+    if ACurrentMatch.Groups[I].Success then
+      memResults.lines.Add(format('  Group %d %d-%d "%s"',
+        [I, ACurrentMatch.Groups[I].Index, ACurrentMatch.Groups[I].
+        Index + ACurrentMatch.Groups[I].Index,
+        ACurrentMatch.Groups[I].Value.replace(#13#10, '^')]));
+  end;
+
+  inc(fCounter);
 
 end;
 

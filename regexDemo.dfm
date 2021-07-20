@@ -26,12 +26,11 @@ object Form1: TForm1
   end
   object Splitter2: TSplitter
     Left = 0
-    Top = 372
+    Top = 369
     Width = 870
     Height = 3
     Cursor = crVSplit
-    Align = alBottom
-    ExplicitTop = 369
+    Align = alTop
     ExplicitWidth = 100
   end
   object Panel1: TPanel
@@ -41,7 +40,6 @@ object Form1: TForm1
     Height = 197
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 861
     DesignSize = (
       870
       197)
@@ -125,14 +123,13 @@ object Form1: TForm1
       '')
     ParentFont = False
     TabOrder = 1
-    ExplicitWidth = 861
   end
   object memResults: TMemo
     Left = 0
-    Top = 375
+    Top = 372
     Width = 870
-    Height = 144
-    Align = alBottom
+    Height = 147
+    Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -19
@@ -140,6 +137,7 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    ExplicitWidth = 861
+    ExplicitTop = 375
+    ExplicitHeight = 144
   end
 end
