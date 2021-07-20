@@ -11,8 +11,8 @@ uses
   System.RegularExpressions;
 
 type
-  TRegexDemoFlags = (rCaseInsensitve=0, rGlobal, rMultiline, rDotall, rExtended,
-    rUngreedy);
+  TRegexDemoFlags = (rCaseInsensitve = 0, rGlobal, rMultiline, rDotall,
+    rExtended, rUngreedy);
 
   TForm1 = class(TForm)
     Panel1: TPanel;
@@ -29,7 +29,9 @@ type
   private
     function Expression: string;
     function GetFlags: TRegExOptions;
-    procedure DisplayResults(AMatch: TMatch; AMatches: TMatchCollection);
+    procedure DisplayResults(AMatch: TMatch); overload;
+    procedure DisplayResults(AMatches: TMatchCollection); overload;
+    procedure Display(ACurrentMatch: TMatch);
     { Private declarations }
   public
     { Public declarations }
@@ -49,7 +51,7 @@ end;
 
 function TForm1.GetFlags: TRegExOptions;
 var
-  I :integer;
+  I: integer;
   Flag: TRegexDemoFlags;
 begin
   result := [];
@@ -75,21 +77,26 @@ begin
   end;
 end;
 
-procedure TForm1.DisplayResults(AMatch: TMatch;
-  AMatches: TMatchCollection);
+procedure TForm1.Display(ACurrentMatch: TMatch);
+begin
+  if (ACurrentMatch.Success) then
+    memResults.lines.Add(format('%d - %s', [ACurrentMatch.Index,
+      ACurrentMatch.Value]));
+end;
 
-  procedure Display(ACurrentMatch: TMatch);
-  begin
-    if ACurrentMatch.Success then
-      memResults.lines.Add(format('%d - %s', [ACurrentMatch.Index , ACurrentMatch.Value]));
-  end;
+procedure TForm1.DisplayResults(AMatches: TMatchCollection);
+begin
+  memResults.Clear;
+  for var lMatch in AMatches do
+    Display(lMatch);
+end;
 
+procedure TForm1.DisplayResults(AMatch: TMatch);
 begin
   memResults.Clear;
   Display(AMatch);
-  for var lMatch in AMatches do
-    display(lMatch);
 end;
+
 
 procedure TForm1.SearchClick(Sender: TObject);
 var
@@ -97,11 +104,17 @@ var
   lMatch: TMatch;
 begin
   if clbFlags.Checked[ord(rGlobal)] then
-    lMatches := TRegex.Matches(memDocument.text, Expression, GetFlags)
+  begin
+    lMatches := TRegex.Matches(memDocument.text, Expression, GetFlags);
+    DisplayResults(lMatches);
+  end
   else
+  begin
     lMatch := TRegex.match(memDocument.text, Expression, GetFlags);
+    DisplayResults(lMatch);
+  end;
 
-  DisplayResults(lMatch, lMatches);
+
 
 end;
 
