@@ -27,6 +27,7 @@ type
     Splitter2: TSplitter;
     procedure SearchClick(Sender: TObject);
   private
+    fCounter: integer;
     function Expression: string;
     function GetFlags: TRegExOptions;
     procedure DisplayResults(AMatch: TMatch); overload;
@@ -79,14 +80,21 @@ end;
 
 procedure TForm1.Display(ACurrentMatch: TMatch);
 begin
-  if (ACurrentMatch.Success) then
-    memResults.lines.Add(format('%d - %s', [ACurrentMatch.Index,
-      ACurrentMatch.Value]));
+  if not (ACurrentMatch.Success) then exit;
+  memResults.lines.Add(format('Match %d %d-%d "%s"',
+    [ FCounter,
+      ACurrentMatch.Index,
+      ACurrentMatch.Index + ACurrentMatch.Length,
+      ACurrentMatch.Value.Replace(#13#10, '^')
+    ]));
+  inc(FCounter);
+
 end;
 
 procedure TForm1.DisplayResults(AMatches: TMatchCollection);
 begin
   memResults.Clear;
+  fCounter := 1;
   for var lMatch in AMatches do
     Display(lMatch);
 end;
@@ -94,9 +102,9 @@ end;
 procedure TForm1.DisplayResults(AMatch: TMatch);
 begin
   memResults.Clear;
+  fCounter := 1;
   Display(AMatch);
 end;
-
 
 procedure TForm1.SearchClick(Sender: TObject);
 var
@@ -113,9 +121,6 @@ begin
     lMatch := TRegex.match(memDocument.text, Expression, GetFlags);
     DisplayResults(lMatch);
   end;
-
-
-
 end;
 
 end.
